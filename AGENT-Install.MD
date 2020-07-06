@@ -93,7 +93,7 @@ Generating RSA private key, 4096 bit long modulus
 e is 65537 (0x10001)
 ```
 ```
-$ openssl req -subj '/CN=client' -new -key key.pem -out client.csr
+$ openssl req -subj '/CN=$HOST-client' -new -key key.pem -out client.csr
 ```
 To make the key suitable for client authentication, create a new extensions config file:
 ```
@@ -149,8 +149,12 @@ $ docker --tlsverify --tlscacert=ca.pem --tlscert=cert.pem --tlskey=key.pem \
   -H=$HOST:2376 version
 ```
 Note: Docker over TLS should run on TCP port 2376.
-Warning: As shown in the example above, you don’t need to run the docker client with sudo or the docker group when you use certificate authentication. That means anyone with the keys can give any instructions to your Docker daemon, giving them root access to the machine hosting the daemon. Guard these keys as you would a root password!
-Secure by default
+
+Warning: As shown in the example above, you don’t need to run the docker client with sudo or the docker group when you use certificate authentication.
+
+That means anyone with the keys can give any instructions to your Docker daemon, giving them root access to the machine hosting the daemon. Guard these keys as you would a root password!
+
+# Secure by default
 If you want to secure your Docker client connections by default, you can move the files to the .docker directory in your home directory --- and set the DOCKER_HOST and DOCKER_TLS_VERIFY variables as well (instead of passing -H=tcp://$HOST:2376 and --tlsverify on every call).
 ```
 $ mkdir -pv ~/.docker
@@ -166,5 +170,24 @@ $ docker ps
 
 # Portainer mode:
 You will need to send a copy of your CA certificate, and your client certificate and key (or issue a new client certificate/key) to that Portainer instance administrator.
+
+
+# Firewall
+
+Please contact SENSE team to find out an IP where portainer is running and open port 2376 (or another if you used different one for setting up docker) and execute the following commands:
+
+X.X.X.X/XX - Replace with an IP/Netmask received from SENSE Team
+PPPP - Replace to port docker daemon listens.
+
+```
+$ firewall-cmd --new-zone=senseportainer --permanent
+success
+$ firewall-cmd --reload
+success
+$ firewall-cmd --zone=senseportainer --add-source=X.X.X.X/XX --permanent
+success
+$ firewall-cmd --zone=senseportainer --add-port=PPPP/tcp --permanent
+success
+```
 
 
