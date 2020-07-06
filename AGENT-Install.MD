@@ -8,7 +8,7 @@ By default, Docker runs through a non-networked UNIX socket. It can also optiona
 HOST=<MY_FULL_FQDN>
 ```
 
-## Prepare and create your Own CAz
+## Prepare and create your Own CA
 Using TLS and managing a CA is an advanced topic. Please familiarize yourself with OpenSSL, x509, and TLS before using it in production.
 
 Create a CA, server and client keys with OpenSSL
@@ -79,6 +79,8 @@ Getting CA Private Key
 Enter pass phrase for ca-key.pem:
 ```
 Authorization plugins offer more fine-grained control to supplement authentication from mutual TLS. In addition to other information described in the above document, authorization plugins running on a Docker daemon receive the certificate information for connecting Docker clients.
+
+# Client Certificate/Key
 
 For client authentication, create a client key and certificate signing request:
 
